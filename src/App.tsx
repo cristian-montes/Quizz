@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import QuestionCard from './components/QuestionCard';
+import { Difficulty, fetchQuizQuestions } from './utils/API';
 
 const TOTA_QUESTIONS = 10;
+
+
 
 function App() {
 const [loading, setLoading] = useState(false);
@@ -12,7 +15,7 @@ const [score, setScore] = useState(0);
 const [gameOver, setGameOver] = useState(true);
 
 
-
+ console.log(fetchQuizQuestions(TOTA_QUESTIONS, Difficulty.EASY))
 
   const startTrivia = async () => {
     
@@ -31,14 +34,14 @@ const [gameOver, setGameOver] = useState(true);
       <h1> REACT QUIZ</h1>
       <button className='start' onClick={startTrivia}> Start</button>
       <p className='score'>Score:</p>
-      <QuestionCard 
+      {/* <QuestionCard 
         questionNr={number + 1}
         totalQuestions={TOTA_QUESTIONS}
         question = {questions[number].question}
         answers={questions[number].answers}
         userAnswer={userAnswers ? userAnswers[number] : undefined}
 
-      />
+      /> */}
       <button className='next' onClick={nextQuestion}> Next Question </button>
     </div>
   );
