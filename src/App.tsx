@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import QuestionCard from './components/QuestionCard';
 import {QuestionState ,Difficulty, fetchQuizQuestions } from './utils/API';
+import { GlobalStyle, Wrapper } from './App.styles';
 
 const TOTA_QUESTIONS = 10;
 
@@ -70,29 +71,32 @@ console.log(questions)
   }
 
   return (
-    <div className='Ap'>
-      <h1> REACT QUIZ</h1>
-      { gameOver || userAnswers.length === TOTA_QUESTIONS 
-        ? 
-      ( <button className='start' onClick={startTrivia}> Start</button>)
-        : 
-        null
-      }
-      {!gameOver ? <p className='score'>Score:</p> : null}
-      {loading && <p>Loading Questions ...</p>}
-      {!loading && !gameOver && (
-        <QuestionCard  
-          questionNr={number + 1}
-          totalQuestions={TOTA_QUESTIONS}
-          question = {questions[number].question}
-          answers={questions[number].answers}
-          userAnswer={userAnswers ? userAnswers[number] : undefined}
-          callback={checkAnswer}
-        /> 
-      )}
-      {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTA_QUESTIONS - 1 ?
-      (<button className='next' onClick={nextQuestion}> Next Question </button>) : null}
-    </div>
+    <>
+    <GlobalStyle />
+      <Wrapper>
+        <h1> REACT QUIZ</h1>
+        { gameOver || userAnswers.length === TOTA_QUESTIONS 
+          ? 
+        ( <button className='start' onClick={startTrivia}> Start</button>)
+          : 
+          null
+        }
+        {!gameOver ? <p className='score'>Score:{score}</p> : null}
+        {loading && <p>Loading Questions ...</p>}
+        {!loading && !gameOver && (
+          <QuestionCard  
+            questionNr={number + 1}
+            totalQuestions={TOTA_QUESTIONS}
+            question = {questions[number].question}
+            answers={questions[number].answers}
+            userAnswer={userAnswers ? userAnswers[number] : undefined}
+            callback={checkAnswer}
+          /> 
+        )}
+        {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTA_QUESTIONS - 1 ?
+        (<button className='next' onClick={nextQuestion}> Next Question </button>) : null}
+      </Wrapper>
+    </>
   );
 }
 
