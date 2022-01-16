@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import QuestionCard from './components/QuestionCard';
-import { Difficulty, fetchQuizQuestions } from './utils/API';
+import {QuestionState ,Difficulty, fetchQuizQuestions } from './utils/API';
 
 const TOTA_QUESTIONS = 10;
 
-
+type AswerObject = {
+  question: string;
+  answer: string;
+  correct: boolean;
+  correctAnswer: string;
+}
 
 function App() {
 const [loading, setLoading] = useState(false);
-const [ questions, setQuestions] = useState([]);
+const [ questions, setQuestions] = useState<QuestionState[]>([]);
 const [ number, setNumber] = useState(0);
 const [userAnswers, setUserAnswers] = useState([])
 const [score, setScore] = useState(0);
