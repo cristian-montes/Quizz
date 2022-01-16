@@ -4,7 +4,7 @@ import {QuestionState ,Difficulty, fetchQuizQuestions } from './utils/API';
 
 const TOTA_QUESTIONS = 10;
 
-type AswerObject = {
+type AnswerObject = {
   question: string;
   answer: string;
   correct: boolean;
@@ -15,19 +15,31 @@ function App() {
 const [loading, setLoading] = useState(false);
 const [ questions, setQuestions] = useState<QuestionState[]>([]);
 const [ number, setNumber] = useState(0);
-const [userAnswers, setUserAnswers] = useState([])
+const [userAnswers, setUserAnswers] = useState<AnswerObject[]>([])
 const [score, setScore] = useState(0);
 const [gameOver, setGameOver] = useState(true);
 
 
- console.log(fetchQuizQuestions(TOTA_QUESTIONS, Difficulty.EASY))
-
+console.log(questions)
   const startTrivia = async () => {
-    
+    setLoading(true);
+    setGameOver(false);
+
+    const newQuestions = await fetchQuizQuestions(TOTA_QUESTIONS, Difficulty.EASY);
+    setQuestions(newQuestions);
+    setScore(0);
+    setUserAnswers([]);
+    setNumber(0);
+
+    setLoading(false);
+
+
   }
 
-  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
 
+
+  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
+    
   }
 
   const nextQuestion = () => {
@@ -37,17 +49,26 @@ const [gameOver, setGameOver] = useState(true);
   return (
     <div className='Ap'>
       <h1> REACT QUIZ</h1>
-      <button className='start' onClick={startTrivia}> Start</button>
-      <p className='score'>Score:</p>
-      {/* <QuestionCard 
-        questionNr={number + 1}
-        totalQuestions={TOTA_QUESTIONS}
-        question = {questions[number].question}
-        answers={questions[number].answers}
-        userAnswer={userAnswers ? userAnswers[number] : undefined}
-
-      /> */}
-      <button className='next' onClick={nextQuestion}> Next Question </button>
+      { gameOver || userAnswers.length === TOTA_QUESTIONS 
+        ? 
+      ( <button className='start' onClick={startTrivia}> Start</button>)
+        : 
+        null
+      }
+      {!gameOver ? <p className='score'>Score:</p> : null}
+      {loading && <p>Loading Questions ...</p>}
+      {!loading && !gameOver && (
+        <QuestionCard  
+          questionNr={number + 1}
+          totalQuestions={TOTA_QUESTIONS}
+          question = {questions[number].question}
+          answers={questions[number].answers}
+          userAnswer={userAnswers ? userAnswers[number] : undefined}
+          callback={checkAnswer}
+        /> 
+      )}
+      {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTA_QUESTIONS - 1 ?
+      (<button className='next' onClick={nextQuestion}> Next Question </button>) : null}
     </div>
   );
 }
