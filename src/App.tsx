@@ -4,7 +4,7 @@ import {QuestionState ,Difficulty, fetchQuizQuestions } from './utils/API';
 
 const TOTA_QUESTIONS = 10;
 
-type AnswerObject = {
+export type AnswerObject = {
   question: string;
   answer: string;
   correct: boolean;
@@ -58,7 +58,15 @@ console.log(questions)
   }
 
   const nextQuestion = () => {
-    
+    // Move on to the next question if not the last question
+    const nextQuestion = number + 1;
+
+    if(nextQuestion === TOTA_QUESTIONS){
+      setGameOver(true);
+    } else {
+      setNumber(nextQuestion);
+    }
+
   }
 
   return (
